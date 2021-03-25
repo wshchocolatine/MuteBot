@@ -43,6 +43,6 @@ client.once('ready', () => {
 client.on('error', console.error); 
 
 
-client.login('Nzk4NjUxNjQxOTA5NzM5NTUw.X_4ITQ.dVkT7qwqRnxXMUFNaYUaJh-wnuw');
+client.login('Nzk4NjUxNjQxOTA5NzM5NTUw.X_4ITQ.AbTQqFSQJUh07eQQ9VLCU3gJe-c');
 
 
