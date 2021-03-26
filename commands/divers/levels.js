@@ -57,7 +57,7 @@ async function getUser (clien) {
         let id = element.id;
 
         embed
-           .addField(`<@!${id}`, xp + '  |  ' + level, true)
+           .addField(username, xp + '  |  ' + level, true)
         }
     })
 

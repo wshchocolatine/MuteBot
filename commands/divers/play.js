@@ -22,34 +22,39 @@ module.exports = class playAudio extends Command {
 
     async run(msg, {audio}) {
 
-        if (!audio.startsWith('http')) {
-            let idVid;
-            YouTube.searchOne(audio)
-              .then(x => {
-                  idVid = x.id
-                  playAudio(`https://www.youtube.com/watch?v=${idVid}`)
-              })
-              .catch(error => console.log(error))
-              ;
-        }
+        let member = msg.guild.members.cache.find(mem => mem.id == msg.author.id);
 
-        else {
-            playAudio(audio);
-        }
+        if (member.voice.channel) {
 
-        function playAudio (audioPlayed) {
-            let voiceChannel = msg.guild.channels.cache
-            .filter(function(channel) {return channel.type === 'voice'})
-            .first()
-            voiceChannel
-                .join().then(connection => {
-                const stream = ytdl(audioPlayed, { filter: 'audioonly' });
-                const dispatcher = connection.play(stream);
-                
-                dispatcher.on('finish', () =>  {
-                    setTimeout( () => voiceChannel.leave(), 60000)
-                });
-            }) 
-        }        
+            if (!audio.startsWith('http')) {
+                let idVid;
+                YouTube.searchOne(audio)
+                  .then(x => {
+                      idVid = x.id
+                      playAudio(`https://www.youtube.com/watch?v=${idVid}`)
+                  })
+                  .catch(error => console.log(error))
+                  ;
+            }
+    
+            else {
+                playAudio(audio);
+            }
+    
+            function playAudio (audioPlayed) {
+                let idChannel = member.voice.channelID;
+                let voiceChannel = msg.guild.channels.cache.find(chan => chan.id == idChannel);
+
+                voiceChannel
+                    .join().then(connection => {
+                    const stream = ytdl(audioPlayed, { filter: 'audioonly' });
+                    const dispatcher = connection.play(stream);
+                    
+                    dispatcher.on('finish', () =>  {
+                        setTimeout( () => voiceChannel.leave(), 60000)
+                    });
+                }) 
+            }     
+        }   
     }
 }

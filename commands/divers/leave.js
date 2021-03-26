@@ -13,11 +13,15 @@ module.exports = class leaveChannel extends Command {
     }
 
     async run (msg) {
-        let voiceChannel = msg.guild.channels.cache
-        .filter(function(channel) {return channel.type === 'voice'})
-        .first()
 
-        voiceChannel.leave();
+        let member = msg.guild.members.cache.find(mem => mem.id == '798651641909739550');
+
+        if (member.voice.channel) {
+            let idChannel = member.voice.channelID;
+            let voiceChannel = msg.guild.channels.cache.find(chan => chan.id == idChannel);
+    
+            voiceChannel.leave();
+        }
     }
 
 }
