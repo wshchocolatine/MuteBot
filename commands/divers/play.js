@@ -22,36 +22,34 @@ module.exports = class playAudio extends Command {
 
     async run(msg, {audio}) {
 
-        let audioPlay;
-
         if (!audio.startsWith('http')) {
             let idVid;
-            YouTube.searchOne('Indila Last Dance')
+            YouTube.searchOne(audio)
               .then(x => {
                   idVid = x.id
+                  playAudio(`https://www.youtube.com/watch?v=${idVid}`)
               })
               .catch(error => console.log(error))
               ;
-            
-            audioPlay = `https://www.youtube.com/watch?v=${idVid}`
         }
 
         else {
-            audioPlay = audio;
+            playAudio(audio);
         }
 
-        let voiceChannel = msg.guild.channels.cache
-        .filter(function(channel) {return channel.type === 'voice'})
-        .first()
-        voiceChannel
-            .join().then(connection => {
-            const stream = ytdl(audioPlay, { filter: 'audioonly' });
-            const dispatcher = connection.play(stream);
-            
-            dispatcher.on('finish', () =>  {
-                setTimeout( () => voiceChannel.leave(), 60000)
-            });
-        }) 
-        
+        function playAudio (audioPlayed) {
+            let voiceChannel = msg.guild.channels.cache
+            .filter(function(channel) {return channel.type === 'voice'})
+            .first()
+            voiceChannel
+                .join().then(connection => {
+                const stream = ytdl(audioPlayed, { filter: 'audioonly' });
+                const dispatcher = connection.play(stream);
+                
+                dispatcher.on('finish', () =>  {
+                    setTimeout( () => voiceChannel.leave(), 60000)
+                });
+            }) 
+        }        
     }
 }

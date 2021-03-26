@@ -13,7 +13,6 @@ module.exports = class leaveChannel extends Command {
     }
 
     async run (msg) {
-        console.log(msg);
         let voiceChannel = msg.guild.channels.cache
         .filter(function(channel) {return channel.type === 'voice'})
         .first()
