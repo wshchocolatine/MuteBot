@@ -31,7 +31,6 @@ module.exports = class mute extends Command {
 
         var damn = msg.guild.members.cache.find(yeah => '<@!' + yeah.user.id +'>' === local); 
          damn.voice.kick();
-        
-
+         msg.delete();
     }
 };

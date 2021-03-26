@@ -35,7 +35,8 @@ module.exports = class setupdb extends Command {
                     let userData = {
                         'name': element.username,
                         'id': element.id,
-                        'xp': 0
+                        'xp': 0,
+                        'level': 0
                     }
 
                     col.insertOne(userData);

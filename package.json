@@ -20,6 +20,7 @@
     "node-fetch": "^2.6.1",
     "winston": "^3.3.3",
     "youtube-audio-stream": "^0.3.6",
+    "youtube-sr": "^4.0.3",
     "ytdl": "^1.4.1",
     "ytdl-core": "^4.5.0"
   }

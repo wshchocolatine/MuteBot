@@ -7,7 +7,13 @@ const fetch = require('node-fetch');
 const client = new CommandoClient({
     commandPrefix: '.',
     owner:  '667375094569369633',
-    disableMentions: 'everyone'
+    disableMentions: 'everyone',
+    presence: {
+        activity: {
+            name: '@MuteBot',
+            type: 'WATCHING'
+        }
+    }
 });
 
 client.registry

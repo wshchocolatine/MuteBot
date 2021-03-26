@@ -63,7 +63,49 @@ module.exports = {
           async function getUser(clien) {
             let db = clien.db('Discord');
             let col = db.collection(msg.guild.id);
-            let userMongo = col.find({id: author});
+            let userMongo = await col.find().toArray();
+
+            
+
+            userMongo.forEach(element => {
+              if (element.xp >= 1000 && element.xp < 2000 && element.level == 0) {
+                col.updateOne(
+                  {id: author},
+                  {
+                    $inc: {level: 1}
+                  }
+                )
+
+                const embed = new Discord.MessageEmbed();
+                embed
+                   .setDescription(`Bravo <@!${msg.author.id}>, tu es de moins en moins un gros lard. Tu viens de 
+                   passer level 1 !`)
+                   .setColor('#3267AB')
+                   ;
+
+                   msg.say(embed);
+              }
+              let level = element.level;
+              let levelPlus = level + 1;
+
+              if (element.xp >= levelPlus * 1000 && level != Math.round(element.xp / 1000) ) {
+                col.updateOne(
+                  {id: author},
+                  {
+                    $inc: {level: 1}
+                  }
+                )
+
+                const embed = new Discord.MessageEmbed();
+                embed
+                   .setDescription(`Bravo <@!${msg.author.id}>, tu es de moins en moins un gros lard. Tu viens de 
+                   passer level ${level} !`)
+                   .setColor('#3267AB')
+                   ;
+
+                   msg.say(embed);
+              }
+            })
 
             let number = Math.floor(Math.random() * 10 + 10);
 
