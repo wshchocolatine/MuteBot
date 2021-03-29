@@ -40,6 +40,7 @@ fs.readdir('./events/', (err, files) => {
   });
 })
 
+
 client.once('ready', () => {
     console.log(`Je suis prêt !`);
     //client.channels.cache.find(channel => channel.name === 'commandes').send("Je suis en ligne !");

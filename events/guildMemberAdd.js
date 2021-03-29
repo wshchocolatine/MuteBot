@@ -32,6 +32,8 @@ module.exports = {
                     'name': msg.user.username,
                     'id': msg.user.id,
                     'xp': 0,
+                    'level': 0,
+                    'cooldown': false,
                 }
 
                 col.insertOne(userData);

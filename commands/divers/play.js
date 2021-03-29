@@ -28,10 +28,12 @@ module.exports = class playAudio extends Command {
 
             if (!audio.startsWith('http')) {
                 let idVid;
+                let titleVid;
                 YouTube.searchOne(audio)
                   .then(x => {
                       idVid = x.id
-                      playAudio(`https://www.youtube.com/watch?v=${idVid}`)
+                      titleVid = x.title
+                      playAudio(`https://www.youtube.com/watch?v=${idVid}`, titleVid, `https://www.youtube.com/watch?v=${idVid}`)
                   })
                   .catch(error => console.log(error))
                   ;
@@ -41,7 +43,7 @@ module.exports = class playAudio extends Command {
                 playAudio(audio);
             }
     
-            function playAudio (audioPlayed) {
+            function playAudio (audioPlayed, video, linkVideo) {
                 let idChannel = member.voice.channelID;
                 let voiceChannel = msg.guild.channels.cache.find(chan => chan.id == idChannel);
 
@@ -49,7 +51,15 @@ module.exports = class playAudio extends Command {
                     .join().then(connection => {
                     const stream = ytdl(audioPlayed, { filter: 'audioonly' });
                     const dispatcher = connection.play(stream);
+
+                    let embed = new Discord.MessageEmbed();
                     
+                    embed.setTitle('Now Playing :')
+                         .setDescription([video] (linkVideo))
+                         .setColor('#3267AB')
+
+                    msg.say(embed);
+
                     dispatcher.on('finish', () =>  {
                         setTimeout( () => voiceChannel.leave(), 60000)
                     });

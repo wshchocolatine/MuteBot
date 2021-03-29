@@ -35,10 +35,10 @@ module.exports = class setupdb extends Command {
         async function insertData (client) {
             let db = client.db('Discord');
             let col = db.collection(msg.guild.id);
-            col.updateMany({}, {$set: {'level': 0}})
+            col.updateMany({}, {$set: {'connected': false}})
         }
 
-        msg.say(`DataBase bien mise à jour pour  ${msg.guild.name}`);
+        msg.say(`DataBase bien mise à jour pour ${msg.guild.name}`);
 
     }
 }

@@ -42,10 +42,22 @@ module.exports = {
          }
         }
 
-        const cooldowns = new Set ();
 
+      try {
+        let author = msg.author.id;
+          const clien = new MongoClient(uri, { useUnifiedTopology: true });
+          await clien.connect();
+          let db = clien.db('Discord');
+          let col = db.collection(msg.guild.id);
+          let damn = await col.find({id: author}).toArray();
+          var cool = damn[0].cooldown; 
+      }
 
-     if (!cooldowns.has(msg.author.id)) {
+      catch (error) {
+        console.log(error);
+      }
+
+     if (cool == false) {
       if (msg.channel.name != 'commandes') {
         if (msg.author.bot == false) {
         
@@ -99,7 +111,7 @@ module.exports = {
                 const embed = new Discord.MessageEmbed();
                 embed
                    .setDescription(`Bravo <@!${msg.author.id}>, tu es de moins en moins un gros lard. Tu viens de 
-                   passer level ${level} !`)
+                   passer level ${levelPlus} !`)
                    .setColor('#3267AB')
                    ;
 
@@ -114,13 +126,23 @@ module.exports = {
               {id: author}, 
               {
                 $inc: {xp: number}
-              })
+              });
 
-          cooldowns.add(msg.author.id);
-          setTimeout(() => cooldowns.delete(msg.author.id), 180000)
+            col.updateOne(
+                {id: author},
+                {
+                  $set: {cooldown: true}
+                })
+
+            setTimeout(() => {
+              col.updateOne(
+                {id: author},
+                {
+                  $set: {cooldown: false}
+                })
+            }, 30000)
+              
           } 
-          
-
         }
        }
       }
